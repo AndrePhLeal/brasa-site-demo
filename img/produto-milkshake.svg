@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#ede9fe"/>
+  <path d="M300 180 L340 460 Q400 500 460 460 L500 180 Z" fill="#fff" stroke="#a78bfa" stroke-width="10"/>
+  <rect x="320" y="220" width="160" height="200" fill="#c084fc" opacity="0.8"/>
+  <circle cx="400" cy="170" r="45" fill="#f472b6"/>
+  <rect x="390" y="60" width="20" height="120" rx="10" fill="#ef4444"/>
+  <text x="400" y="540" font-family="Arial,sans-serif" font-size="42" fill="#5b21b6" text-anchor="middle">Milk-shake</text>
+</svg>

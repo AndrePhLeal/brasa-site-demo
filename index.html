@@ -1,0 +1,915 @@
+<!-- Template v1.0.2 -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:image" content="">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+  <title>Site</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link id="fontes" rel="stylesheet" href="">
+  <style>
+    :root {
+      --cor-primaria: #c2410c;
+      --cor-secundaria: #7c2d12;
+      --cor-destaque: #f59e0b;
+      --cor-fundo: #fffaf5;
+      --cor-superficie: #ffffff;
+      --cor-superficie-2: #f6f1eb;
+      --cor-texto: #1f2937;
+      --cor-texto-suave: #4b5563;
+      --cor-borda: rgba(31,41,55,0.12);
+      --cor-hero-overlay: rgba(0,0,0,0.45);
+      --fonte-titulo: "Fraunces", Georgia, serif;
+      --fonte-corpo: "Manrope", system-ui, sans-serif;
+      --raio: 16px;
+      --raio-pequeno: 10px;
+      --sombra: 0 10px 30px rgba(0,0,0,0.08);
+      --sombra-forte: 0 18px 50px rgba(0,0,0,0.16);
+      --espaco-secao: 72px;
+      --espaco-card: 22px;
+      --transicao: 220ms ease;
+      --container: 1120px;
+      --peso-titulo: 700;
+      --tracking-titulo: -0.02em;
+      --anim-dist: 24px;
+      --anim-dur: 600ms;
+      --anim-stagger: 80ms;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--fonte-corpo);
+      color: var(--cor-texto);
+      background: var(--cor-fundo);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    button, input { font: inherit; }
+    :focus-visible { outline: 3px solid var(--cor-destaque); outline-offset: 3px; }
+
+    .container { width: min(100% - 2rem, var(--container)); margin: 0 auto; }
+    .secao { padding: var(--espaco-secao) 0; scroll-margin-top: 84px; }
+    .secao-titulo {
+      font-family: var(--fonte-titulo);
+      font-weight: var(--peso-titulo);
+      letter-spacing: var(--tracking-titulo);
+      font-size: clamp(1.8rem, 2vw + 1rem, 2.6rem);
+      line-height: 1.15;
+      margin: 0 0 0.5rem;
+    }
+    .secao-sub { margin: 0 0 2rem; color: var(--cor-texto-suave); max-width: 62ch; }
+    .grade { display: grid; gap: 1rem; }
+    .grade > *, .hero-conteudo, .topo-inner > * { min-width: 0; }
+
+    /* Estilos (tipografia, bordas, sombras, espaçamento) */
+    body[data-estilo="moderno"] {
+      --peso-titulo: 750; --tracking-titulo: -0.03em;
+      --espaco-secao: 76px; --espaco-card: 22px;
+    }
+    body[data-estilo="elegante"] {
+      --peso-titulo: 600; --tracking-titulo: 0;
+      --espaco-secao: 88px; --espaco-card: 26px;
+      --sombra: 0 12px 36px rgba(0,0,0,0.06);
+    }
+    body[data-estilo="divertido"] {
+      --peso-titulo: 800; --tracking-titulo: -0.02em;
+      --espaco-secao: 72px; --espaco-card: 20px;
+      --sombra: 0 12px 0 rgba(0,0,0,0.08);
+    }
+    body[data-estilo="minimalista"] {
+      --peso-titulo: 600; --tracking-titulo: -0.01em;
+      --espaco-secao: 64px; --espaco-card: 18px;
+      --sombra: none;
+    }
+    body[data-estilo="elegante"] .secao-titulo { line-height: 1.2; }
+    body[data-estilo="divertido"] .btn, body[data-estilo="divertido"] .card { border-width: 2px; }
+    body[data-estilo="minimalista"] .card { border: 1px solid var(--cor-borda); }
+
+    /* Arredondamento */
+    body[data-raio="reto"] { --raio: 4px; --raio-pequeno: 2px; }
+    body[data-raio="suave"] { --raio: 16px; --raio-pequeno: 10px; }
+    body[data-raio="redondo"] { --raio: 28px; --raio-pequeno: 18px; }
+
+    /* Topo */
+    .progresso-leitura {
+      position: absolute; left: 0; top: 0; height: 3px; width: 100%;
+      background: var(--cor-primaria); transform: scaleX(0); transform-origin: left;
+      opacity: 0.95; pointer-events: none;
+    }
+    .topo {
+      position: fixed; inset: 0 0 auto 0; z-index: 50;
+      background: color-mix(in srgb, var(--cor-fundo) 88%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--cor-borda);
+      transition: box-shadow var(--transicao), background var(--transicao);
+    }
+    .topo.scrolled {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      background: color-mix(in srgb, var(--cor-fundo) 94%, transparent);
+    }
+    .topo-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; min-height: 68px; padding: 0.5rem 0;
+      transition: min-height var(--transicao), padding var(--transicao);
+    }
+    .topo.scrolled .topo-inner { min-height: 56px; padding: 0.25rem 0; }
+    .marca {
+      font-family: var(--fonte-titulo); font-weight: var(--peso-titulo);
+      font-size: 1.05rem; text-decoration: none; letter-spacing: var(--tracking-titulo);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 52vw;
+    }
+    .menu { display: none; gap: 0.25rem; align-items: center; flex-wrap: wrap; }
+    .menu a {
+      text-decoration: none; color: var(--cor-texto-suave); font-weight: 600;
+      padding: 0.45rem 0.7rem; border-radius: 999px; font-size: 0.95rem;
+      transition: color var(--transicao), background var(--transicao);
+    }
+    .menu a:hover { color: var(--cor-texto); background: var(--cor-superficie-2); }
+    .menu a.ativo { color: var(--cor-primaria); background: color-mix(in srgb, var(--cor-primaria) 12%, transparent); }
+    .acoes-topo { display: flex; gap: 0.5rem; align-items: center; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.8rem 1.1rem; border-radius: 999px; border: 1px solid transparent;
+      text-decoration: none; font-weight: 700; cursor: pointer; transition: all var(--transicao);
+      min-height: 44px;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn-primario { background: var(--cor-primaria); color: #fff; box-shadow: var(--sombra); }
+    .btn-primario:hover { filter: brightness(1.05); }
+    .btn-secundario { background: var(--cor-superficie); color: var(--cor-texto); border-color: var(--cor-borda); }
+    .btn-secundario:hover { background: var(--cor-superficie-2); }
+    .btn-sm { padding: 0.55rem 0.9rem; font-size: 0.92rem; }
+
+    main { padding-top: 68px; }
+
+    /* Hero */
+    .hero {
+      position: relative; min-height: min(88vh, 760px); display: grid; align-items: center;
+      color: #fff; overflow: hidden; background: #111;
+    }
+    .hero-bg { position: absolute; inset: 0; will-change: transform; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); }
+    .hero-bg::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(120deg, rgba(0,0,0,.72), rgba(0,0,0,.35) 55%, rgba(0,0,0,.55)),
+                  linear-gradient(to top, rgba(0,0,0,.55), transparent 40%);
+    }
+    .hero-conteudo { position: relative; padding: 3rem 0; max-width: 720px; }
+    .hero h1 {
+      font-family: var(--fonte-titulo); font-weight: var(--peso-titulo);
+      letter-spacing: var(--tracking-titulo);
+      font-size: clamp(2.2rem, 4vw + 1rem, 4.4rem); line-height: 1.05; margin: 0 0 1rem;
+    }
+    .hero p { font-size: clamp(1.05rem, 1vw + .8rem, 1.3rem); margin: 0 0 1.6rem; color: rgba(255,255,255,.92); max-width: 52ch; }
+    .hero-acoes { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .hero .btn-secundario { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.28); backdrop-filter: blur(4px); }
+    .hero .btn-secundario:hover { background: rgba(255,255,255,.2); }
+
+    /* Cards e blocos */
+    .card {
+      background: var(--cor-superficie); border-radius: var(--raio);
+      padding: var(--espaco-card); box-shadow: var(--sombra);
+      border: 1px solid color-mix(in srgb, var(--cor-borda) 70%, transparent);
+    }
+    .sobre-grid { align-items: start; }
+    .sobre-texto p { margin: 0; font-size: 1.05rem; color: var(--cor-texto-suave); }
+    .difs { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 1rem; align-content: start; }
+    #sobre .card.dif { padding: 1rem 1.1rem; }
+    .dif { display: flex; gap: 0.8rem; align-items: flex-start; }
+    .dif .emoji { font-size: 1.5rem; line-height: 1; }
+    .dif p { margin: 0; font-weight: 600; }
+
+    /* Produtos */
+    .filtros { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0 0 1.2rem; }
+    .chip {
+      border: 1px solid var(--cor-borda); background: var(--cor-superficie); color: var(--cor-texto);
+      padding: 0.55rem 0.9rem; border-radius: 999px; cursor: pointer; font-weight: 600;
+    }
+    .chip.ativo { background: var(--cor-primaria); color: #fff; border-color: var(--cor-primaria); }
+    .produtos-grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+    .produto { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+    .produto img { aspect-ratio: 4 / 3; width: 100%; object-fit: cover; background: var(--cor-superficie-2); }
+    .produto-corpo { padding: 1rem 1rem 1.1rem; display: grid; gap: 0.35rem; }
+    .produto h3 { margin: 0; font-family: var(--fonte-titulo); font-size: 1.15rem; }
+    .produto p { margin: 0; color: var(--cor-texto-suave); font-size: 0.96rem; }
+    .preco { color: var(--cor-primaria); font-weight: 800; font-size: 1.05rem; margin-top: 0.2rem; }
+
+    /* Galeria */
+    .galeria-grid { grid-template-columns: repeat(2, 1fr); }
+    .galeria-item { padding: 0; overflow: hidden; cursor: pointer; border: 0; background: none; width: 100%; }
+    .galeria-item:last-child:nth-child(odd) { grid-column: span 2; }
+    .galeria-item:last-child:nth-child(odd) img { aspect-ratio: 2 / 1; }
+    .galeria-item img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; transition: transform 300ms ease; }
+    .galeria-item:hover img { transform: scale(1.04); }
+
+    .lightbox {
+      position: fixed; inset: 0; background: rgba(0,0,0,.86); display: none;
+      align-items: center; justify-content: center; z-index: 80; padding: 1rem;
+    }
+    .lightbox.aberto { display: flex; }
+    .lightbox img { max-width: min(100%, 1000px); max-height: 85vh; border-radius: var(--raio-pequeno); }
+    .lightbox-fechar {
+      position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,.15); color: #fff;
+      border: 1px solid rgba(255,255,255,.3); width: 44px; height: 44px; border-radius: 999px; font-size: 1.4rem; cursor: pointer;
+    }
+
+    /* Depoimentos */
+    .depo-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .depo p { margin: 0 0 0.8rem; color: var(--cor-texto-suave); font-size: 1.02rem; }
+    .depo strong { font-family: var(--fonte-titulo); }
+
+    /* Horário e local */
+    .info-grid { grid-template-columns: 1fr; align-items: start; }
+    .status {
+      display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700;
+      padding: 0.45rem 0.75rem; border-radius: 999px; margin-bottom: 1rem;
+    }
+    .status::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
+    .status.aberto { color: #166534; background: #dcfce7; }
+    .status.fechado { color: #991b1b; background: #fee2e2; }
+    .lista-horario { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.45rem; }
+    .lista-horario li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.35rem 0; border-bottom: 1px dashed var(--cor-borda); flex-wrap: wrap; }
+    .lista-horario span:last-child { color: var(--cor-texto-suave); font-weight: 600; }
+    .mapa-wrap { border-radius: var(--raio); overflow: hidden; border: 1px solid var(--cor-borda); min-height: 320px; background: var(--cor-superficie-2); }
+    .mapa-wrap iframe { width: 100%; height: 100%; min-height: 320px; border: 0; }
+    .bloco-acoes { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; }
+
+    /* Contato e rodapé */
+    .contato-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .contato-item h3 { margin: 0 0 0.25rem; font-size: 1.05rem; font-family: var(--fonte-titulo); }
+    .contato-item p, .contato-item a { margin: 0; color: var(--cor-texto-suave); text-decoration: none; font-weight: 600; overflow-wrap: anywhere; }
+    .contato-item a:hover { color: var(--cor-primaria); }
+    footer { padding: 2rem 0 6rem; border-top: 1px solid var(--cor-borda); color: var(--cor-texto-suave); }
+    footer p { margin: 0; text-align: center; font-weight: 600; }
+
+    .whats-float {
+      position: fixed; right: 1rem; bottom: 1rem; z-index: 60;
+      width: 58px; height: 58px; border-radius: 999px; background: #25d366; color: #fff;
+      display: inline-flex; align-items: center; justify-content: center; text-decoration: none;
+      box-shadow: 0 12px 30px rgba(37,211,102,.35); font-size: 1.6rem;
+      opacity: 0; transform: translateY(10px); pointer-events: none;
+      transition: opacity var(--anim-dur) ease, transform var(--anim-dur) ease;
+    }
+    .whats-float.visivel { opacity: 1; transform: none; pointer-events: auto; }
+    .whats-float.visivel:hover { transform: translateY(-2px); }
+
+    /* Animações de rolagem (controladas por JS/variáveis) */
+    .js-anim .revelar {
+      --reveal-y: var(--anim-dist);
+      opacity: 0;
+      transform: translateY(var(--reveal-y));
+      transition: opacity var(--anim-dur) ease, transform var(--anim-dur) ease;
+      transition-delay: var(--atraso, 0ms);
+    }
+    .js-anim .revelar.dir-cima { --reveal-y: calc(var(--anim-dist) * -1); }
+    .js-anim .revelar.visivel { opacity: 1; transform: none; }
+    .js-anim .revelar.sem-transicao { transition: none !important; }
+    body[data-animacao="nenhuma"] .revelar,
+    body[data-animacao="nenhuma"] .whats-float {
+      opacity: 1 !important; transform: none !important; transition: none !important;
+    }
+    body[data-animacao="nenhuma"] .whats-float { pointer-events: auto; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .revelar, .whats-float { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .whats-float { pointer-events: auto; }
+      .btn, .galeria-item img, .progresso-leitura, .topo, .topo-inner, .menu a { transition: none !important; }
+    }
+
+    @media (min-width: 760px) {
+      .menu { display: flex; }
+      .sobre-grid { grid-template-columns: 1.1fr 1fr; }
+      .galeria-grid { grid-template-columns: repeat(4, 1fr); }
+      .galeria-item:last-child:nth-child(odd) { grid-column: auto; }
+      .galeria-item:last-child:nth-child(odd) img { aspect-ratio: 1 / 1; }
+      .info-grid { grid-template-columns: 1fr 1.2fr; }
+      footer { padding-bottom: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topo" id="topo">
+    <div class="progresso-leitura" id="progresso-leitura" aria-hidden="true"></div>
+    <div class="container topo-inner">
+      <a href="#inicio" class="marca" id="marca"></a>
+      <nav class="menu" id="menu" aria-label="Seções">
+        <a href="#sobre" data-nav="sobre">Sobre</a>
+        <a href="#produtos" data-nav="produtos">Produtos</a>
+        <a href="#galeria" data-nav="galeria">Galeria</a>
+        <a href="#depoimentos" data-nav="depoimentos">Depoimentos</a>
+        <a href="#horario" data-nav="horario">Horário</a>
+        <a href="#localizacao" data-nav="localizacao">Local</a>
+        <a href="#contato" data-nav="contato">Contato</a>
+      </nav>
+      <div class="acoes-topo">
+        <a id="topo-whats" class="btn btn-primario btn-sm" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section id="hero" class="hero">
+      <div class="hero-bg" id="hero-bg"></div>
+      <div class="container">
+        <div class="hero-conteudo revelar" data-revelar-fixo>
+          <h1 id="hero-nome"></h1>
+          <p id="hero-slogan"></p>
+          <div class="hero-acoes">
+            <a id="hero-whats" class="btn btn-primario" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+            <a id="hero-insta" class="btn btn-secundario" target="_blank" rel="noopener">Instagram</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sobre" class="secao">
+      <div class="container sobre-grid grade">
+        <div class="sobre-texto revelar">
+          <h2 class="secao-titulo">Sobre nós</h2>
+          <p id="sobre-texto"></p>
+        </div>
+        <div id="difs" class="difs grade"></div>
+      </div>
+    </section>
+
+    <section id="produtos" class="secao">
+      <div class="container">
+        <div class="revelar">
+          <h2 class="secao-titulo">Nossos produtos</h2>
+          <p class="secao-sub">Escolha uma categoria e encontre o que combina com você.</p>
+        </div>
+        <div id="filtros" class="filtros" aria-label="Filtrar por categoria"></div>
+        <div id="produtos-grid" class="produtos-grid grade"></div>
+      </div>
+    </section>
+
+    <section id="galeria" class="secao">
+      <div class="container">
+        <div class="revelar">
+          <h2 class="secao-titulo">Galeria</h2>
+          <p class="secao-sub">Um pouco do nosso espaço e do que preparamos.</p>
+        </div>
+        <div id="galeria-grid" class="galeria-grid grade"></div>
+      </div>
+    </section>
+
+    <section id="depoimentos" class="secao">
+      <div class="container">
+        <div class="revelar">
+          <h2 class="secao-titulo">Depoimentos</h2>
+          <p class="secao-sub">O que nossos clientes dizem.</p>
+        </div>
+        <div id="depo-grid" class="depo-grid grade"></div>
+      </div>
+    </section>
+
+    <section id="horario" class="secao">
+      <div class="container">
+        <div class="revelar">
+          <h2 class="secao-titulo">Horário de funcionamento</h2>
+          <p class="secao-sub">Confira quando estamos abertos para receber você.</p>
+        </div>
+        <div class="card">
+          <div id="status-func" class="status revelar"></div>
+          <ul id="lista-horario" class="lista-horario revelar"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="localizacao" class="secao">
+      <div class="container">
+        <div class="revelar">
+          <h2 class="secao-titulo">Localização</h2>
+          <p class="secao-sub">Veja onde estamos e trace sua rota.</p>
+        </div>
+        <div class="info-grid grade" id="local-grid">
+          <div class="card" data-reveal-card>
+            <p id="endereco-texto" style="margin:0 0 1rem; color: var(--cor-texto-suave); font-weight:600;"></p>
+            <div class="bloco-acoes">
+              <a id="btn-como-chegar" class="btn btn-primario" target="_blank" rel="noopener">Como chegar</a>
+            </div>
+          </div>
+          <div class="mapa-wrap" data-reveal-card><iframe id="mapa-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa da localização"></iframe></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato" class="secao">
+      <div class="container">
+        <div class="revelar">
+          <h2 class="secao-titulo">Contato</h2>
+          <p class="secao-sub">Fale com a gente pelo canal que preferir.</p>
+        </div>
+        <div id="contato-grid" class="contato-grid grade"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>Site por Foxel Tech</p>
+    </div>
+  </footer>
+
+  <a id="whats-float" class="whats-float" target="_blank" rel="noopener" aria-label="Abrir WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" focusable="false" fill="currentColor">
+      <path d="M19.11 17.53c-.27-.14-1.6-.79-1.84-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.17-1.34-.8-.72-1.34-1.6-1.5-1.87-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.48-.84-2.03-.22-.53-.45-.46-.61-.46h-.52c-.18 0-.48.07-.73.34-.25.27-.95.93-.95 2.27s.98 2.64 1.11 2.82c.14.18 1.92 2.94 4.66 4.12.65.28 1.16.45 1.56.58.66.21 1.25.18 1.72.11.53-.08 1.6-.66 1.83-1.29.23-.63.23-1.17.16-1.29-.07-.11-.25-.18-.52-.32zM16.03 5.33c-5.87 0-10.64 4.77-10.64 10.64 0 1.88.49 3.7 1.42 5.31l-1.51 5.51 5.64-1.48a10.6 10.6 0 0 0 5.09 1.29h.01c5.86 0 10.63-4.77 10.63-10.64 0-2.84-1.11-5.51-3.12-7.52a10.57 10.57 0 0 0-7.52-3.11zm0 19.35h-.01a8.8 8.8 0 0 1-4.49-1.23l-.32-.19-3.35.88.89-3.27-.21-.34a8.82 8.82 0 0 1-1.35-4.7c0-4.87 3.97-8.84 8.85-8.84 2.36 0 4.58.92 6.25 2.59a8.78 8.78 0 0 1 2.59 6.25c0 4.87-3.97 8.85-8.85 8.85z"/>
+    </svg>
+  </a>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="lightbox-fechar" type="button" aria-label="Fechar imagem">&times;</button>
+    <img id="lightbox-img" alt="">
+  </div>
+
+  <script src="cliente.js"></script>
+  <script>
+    (function () {
+      const $ = (sel) => document.querySelector(sel);
+      const esc = (s) => String(s ?? "");
+      const temTexto = (v) => typeof v === "string" ? v.trim().length > 0 : !!v;
+      const listaValida = (arr) => Array.isArray(arr) && arr.filter(Boolean).length > 0;
+
+      function aplicarTema(tema) {
+        if (!tema) return;
+        const r = document.documentElement;
+        const c = tema.cores || {};
+        if (c.primaria) r.style.setProperty("--cor-primaria", c.primaria);
+        if (c.secundaria) r.style.setProperty("--cor-secundaria", c.secundaria);
+        if (c.destaque) r.style.setProperty("--cor-destaque", c.destaque);
+        if (c.fundo) r.style.setProperty("--cor-fundo", c.fundo);
+        if (c.texto) r.style.setProperty("--cor-texto", c.texto);
+
+        // Ajustes derivados para modo escuro/claro
+        const modo = tema.modo === "escuro" ? "escuro" : "claro";
+        if (modo === "escuro") {
+          r.style.setProperty("--cor-fundo", c.fundo || "#0f1115");
+          r.style.setProperty("--cor-superficie", "color-mix(in srgb, " + (c.fundo || "#0f1115") + " 88%, #ffffff)");
+          r.style.setProperty("--cor-superficie-2", "color-mix(in srgb, " + (c.fundo || "#0f1115") + " 80%, #ffffff)");
+          r.style.setProperty("--cor-texto", c.texto || "#f3f4f6");
+          r.style.setProperty("--cor-texto-suave", "color-mix(in srgb, " + (c.texto || "#f3f4f6") + " 72%, transparent)");
+          r.style.setProperty("--cor-borda", "rgba(255,255,255,0.14)");
+        } else {
+          r.style.setProperty("--cor-superficie", "#ffffff");
+          r.style.setProperty("--cor-superficie-2", "color-mix(in srgb, " + (c.fundo || "#fffaf5") + " 70%, #000000 4%)");
+          r.style.setProperty("--cor-texto-suave", "color-mix(in srgb, " + (c.texto || "#1f2937") + " 70%, transparent)");
+          r.style.setProperty("--cor-borda", "rgba(31,41,55,0.12)");
+        }
+        document.body.dataset.modo = modo;
+
+        const estilo = ["moderno","elegante","divertido","minimalista"].includes(tema.estilo) ? tema.estilo : "moderno";
+        const raio = ["reto","suave","redondo"].includes(tema.arredondamento) ? tema.arredondamento : "suave";
+        document.body.dataset.estilo = estilo;
+        document.body.dataset.raio = raio;
+
+        const tit = (tema.fonte && tema.fonte.titulos) || "Fraunces";
+        const corpo = (tema.fonte && tema.fonte.corpo) || "Manrope";
+        r.style.setProperty("--fonte-titulo", '"' + tit + '", Georgia, serif');
+        r.style.setProperty("--fonte-corpo", '"' + corpo + '", system-ui, sans-serif');
+        const familias = [tit, corpo].map(f => "family=" + encodeURIComponent(f).replace(/%20/g, "+") + ":wght@400;600;700;800").join("&");
+        $("#fontes").href = "https://fonts.googleapis.com/css2?" + familias + "&display=swap";
+
+        const anim = ["nenhuma","suave","dinamica"].includes(tema.animacao) ? tema.animacao : "suave";
+        const animMap = {
+          nenhuma:  { dist: "0px",  dur: "0ms",   stagger: 0 },
+          suave:    { dist: "24px", dur: "600ms", stagger: 80 },
+          dinamica: { dist: "36px", dur: "750ms", stagger: 100 }
+        };
+        const a = animMap[anim];
+        r.style.setProperty("--anim-dist", a.dist);
+        r.style.setProperty("--anim-dur", a.dur);
+        r.style.setProperty("--anim-stagger", a.stagger + "ms");
+        document.body.dataset.animacao = anim;
+        document.body.dataset.animacaoRepetir = String(tema.animacaoRepetir !== false);
+
+        const metaTheme = document.querySelector('meta[name="theme-color"]');
+        if (metaTheme) metaTheme.setAttribute("content", c.primaria || "#ffffff");
+      }
+
+      function aplicarSEO(cliente) {
+        const seo = cliente.seo || {};
+        const titulo = seo.titulo || cliente.nome || "Site";
+        const desc = seo.descricao || cliente.slogan || cliente.sobre || "";
+        document.title = titulo;
+        const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute("content", val); };
+        setMeta('meta[name="description"]', desc);
+        setMeta('meta[property="og:title"]', titulo);
+        setMeta('meta[property="og:description"]', desc);
+        setMeta('meta[name="twitter:title"]', titulo);
+        setMeta('meta[name="twitter:description"]', desc);
+        const heroImg = cliente.hero && (cliente.hero.imagem || cliente.hero.src || cliente.hero);
+        const galeriaImgs = listaValida(cliente.galeria) ? cliente.galeria : [];
+        const fotos = listaValida(cliente.fotos) ? cliente.fotos : [];
+        const ogImg = (typeof heroImg === 'string' ? heroImg : (heroImg && heroImg.src)) || (galeriaImgs[0] && (galeriaImgs[0].src || galeriaImgs[0])) || (fotos[0] && (fotos[0].src || fotos[0])) || "";
+        if (ogImg) {
+          setMeta('meta[property="og:image"]', ogImg);
+          setMeta('meta[name="twitter:image"]', ogImg);
+        }
+      }
+
+      function linkWhats(numero) {
+        const n = esc(numero).replace(/\D/g, "");
+        return n ? "https://wa.me/" + n : "";
+      }
+      function linkInsta(usuario) {
+        const u = esc(usuario).replace(/^@/, "").trim();
+        return u ? "https://instagram.com/" + u : "";
+      }
+      function linkMaps(endereco) {
+        const e = esc(endereco).trim();
+        return e ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(e) : "";
+      }
+
+      function ocultar(id) { const el = document.getElementById(id); if (el) el.style.display = "none"; }
+      function ocultarNav(secaoId) {
+        document.querySelectorAll('[data-nav="' + secaoId + '"]').forEach(a => a.style.display = "none");
+      }
+
+      function renderHero(c) {
+        $("#marca").textContent = c.nome || "Início";
+        $("#hero-nome").textContent = c.nome || "";
+        $("#hero-slogan").textContent = c.slogan || "";
+        const heroBg = $("#hero-bg");
+        const heroCfg = c.hero || {};
+        const heroSrc = (typeof heroCfg === "string" ? heroCfg : (heroCfg.imagem || heroCfg.src)) || (listaValida(c.fotos) && ((c.fotos[0] && (c.fotos[0].src || c.fotos[0])) || ""));
+        const heroAlt = (heroCfg && heroCfg.alt) || c.nome || "Imagem de destaque";
+        if (heroSrc) {
+          const img = document.createElement("img");
+          img.src = heroSrc;
+          img.alt = heroAlt;
+          img.loading = "eager";
+          img.decoding = "async";
+          heroBg.appendChild(img);
+        } else {
+          heroBg.style.background = "linear-gradient(120deg, var(--cor-primaria), var(--cor-secundaria))";
+        }
+        const w = linkWhats(c.whatsapp);
+        const ig = linkInsta(c.instagram);
+        if (w) { $("#hero-whats").href = w; $("#topo-whats").href = w; $("#whats-float").href = w; }
+        else { $("#hero-whats").style.display = "none"; $("#topo-whats").style.display = "none"; $("#whats-float").style.display = "none"; }
+        if (ig) { $("#hero-insta").href = ig; } else { $("#hero-insta").style.display = "none"; }
+      }
+
+      function renderSobre(c) {
+        const temSobre = temTexto(c.sobre);
+        const difs = listaValida(c.diferenciais) ? c.diferenciais : [];
+        if (!temSobre && difs.length === 0) { ocultar("sobre"); ocultarNav("sobre"); return; }
+        if (temSobre) $("#sobre-texto").textContent = c.sobre; else $(".sobre-texto").style.display = "none";
+        const wrap = $("#difs");
+        if (difs.length) {
+          difs.forEach(d => {
+            const item = document.createElement("div");
+            item.className = "card dif revelar";
+            const emoji = document.createElement("div");
+            emoji.className = "emoji";
+            emoji.textContent = d.emoji || "•";
+            const p = document.createElement("p");
+            p.textContent = d.texto || "";
+            item.append(emoji, p);
+            wrap.appendChild(item);
+          });
+        } else { wrap.style.display = "none"; }
+      }
+
+      function renderProdutos(c) {
+        const produtos = listaValida(c.produtos) ? c.produtos : [];
+        if (!produtos.length) { ocultar("produtos"); ocultarNav("produtos"); return; }
+        const categorias = ["Todos", ...Array.from(new Set(produtos.map(p => p.categoria).filter(Boolean)))];
+        const filtros = $("#filtros");
+        const grid = $("#produtos-grid");
+        let ativa = "Todos";
+        let primeiraCarga = true;
+
+        function desenhar(lista) {
+          grid.innerHTML = "";
+          lista.forEach(p => {
+            const card = document.createElement("article");
+            card.className = "card produto revelar" + (primeiraCarga ? "" : " visivel");
+            if (p.foto) {
+              const img = document.createElement("img");
+              img.src = p.foto; img.alt = p.nome ? "Foto de " + p.nome : "Foto do produto";
+              img.loading = "lazy"; img.decoding = "async";
+              card.appendChild(img);
+            }
+            const corpo = document.createElement("div");
+            corpo.className = "produto-corpo";
+            const h3 = document.createElement("h3"); h3.textContent = p.nome || "";
+            const desc = document.createElement("p"); desc.textContent = p.descricao || "";
+            const preco = document.createElement("div"); preco.className = "preco"; preco.textContent = p.preco || "";
+            corpo.append(h3, desc, preco);
+            card.appendChild(corpo);
+            grid.appendChild(card);
+          });
+          primeiraCarga = false;
+        }
+
+        filtros.classList.add("revelar");
+        categorias.forEach(cat => {
+          const b = document.createElement("button");
+          b.type = "button"; b.className = "chip" + (cat === ativa ? " ativo" : "");
+          b.textContent = cat;
+          b.addEventListener("click", () => {
+            ativa = cat;
+            filtros.querySelectorAll(".chip").forEach(ch => ch.classList.toggle("ativo", ch.textContent === cat));
+            desenhar(cat === "Todos" ? produtos : produtos.filter(p => p.categoria === cat));
+          });
+          filtros.appendChild(b);
+        });
+        if (categorias.length <= 1) filtros.style.display = "none";
+        desenhar(produtos);
+      }
+
+      function renderGaleria(c) {
+        let fotos = [];
+        if (listaValida(c.galeria)) {
+          fotos = c.galeria;
+        } else {
+          const todas = listaValida(c.fotos) ? c.fotos : [];
+          fotos = todas.length > 1 ? todas.slice(1) : todas;
+        }
+        if (!fotos.length) { ocultar("galeria"); ocultarNav("galeria"); return; }
+        const grid = $("#galeria-grid");
+        const lb = $("#lightbox"), lbImg = $("#lightbox-img");
+        fotos.forEach(f => {
+          const btn = document.createElement("button");
+          btn.type = "button"; btn.className = "galeria-item card revelar"; btn.setAttribute("aria-label", "Ampliar imagem");
+          const img = document.createElement("img");
+          img.src = f.src || f; img.alt = f.alt || "Foto da galeria"; img.loading = "lazy"; img.decoding = "async";
+          btn.appendChild(img);
+          btn.addEventListener("click", () => {
+            lbImg.src = img.src; lbImg.alt = img.alt; lb.classList.add("aberto"); lb.setAttribute("aria-hidden","false");
+          });
+          grid.appendChild(btn);
+        });
+        const fechar = () => { lb.classList.remove("aberto"); lb.setAttribute("aria-hidden","true"); lbImg.src = ""; };
+        lb.querySelector(".lightbox-fechar").addEventListener("click", fechar);
+        lb.addEventListener("click", (e) => { if (e.target === lb) fechar(); });
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape") fechar(); });
+      }
+
+      function renderDepoimentos(c) {
+        const deps = listaValida(c.depoimentos) ? c.depoimentos : [];
+        if (!deps.length) { ocultar("depoimentos"); ocultarNav("depoimentos"); return; }
+        const grid = $("#depo-grid");
+        deps.forEach(d => {
+          const card = document.createElement("article");
+          card.className = "card depo revelar";
+          const p = document.createElement("p"); p.textContent = "“" + (d.texto || "") + "”";
+          const s = document.createElement("strong"); s.textContent = d.nome || "Cliente";
+          card.append(p, s); grid.appendChild(card);
+        });
+      }
+
+      function calcAberto(horario) {
+        if (!Array.isArray(horario) || !horario.length) return null;
+        const agora = new Date();
+        const mapa = ["domingo","segunda","terça","terca","quarta","quinta","sexta","sábado","sabado"];
+        const diaNome = mapa[agora.getDay()];
+        const atualMin = agora.getHours() * 60 + agora.getMinutes();
+        const item = horario.find(h => esc(h.dia).toLowerCase().includes(diaNome)) || horario[(agora.getDay() + 6) % 7];
+        if (!item || !temTexto(item.abre) || !temTexto(item.fecha)) return false;
+        const toMin = (hhmm) => { const [h,m] = hhmm.split(":").map(Number); return h*60 + (m||0); };
+        const abre = toMin(item.abre), fecha = toMin(item.fecha);
+        if (isNaN(abre) || isNaN(fecha)) return false;
+        if (fecha > abre) return atualMin >= abre && atualMin < fecha;
+        return atualMin >= abre || atualMin < fecha; // cruza meia-noite
+      }
+
+      function renderHorario(c) {
+        const horario = listaValida(c.horario) ? c.horario : [];
+        if (!horario.length) { ocultar("horario"); ocultarNav("horario"); return; }
+        const ul = $("#lista-horario");
+        horario.forEach(h => {
+          const li = document.createElement("li");
+          const dia = document.createElement("span"); dia.textContent = h.dia || "";
+          const hrs = document.createElement("span");
+          hrs.textContent = (temTexto(h.abre) && temTexto(h.fecha)) ? (h.abre + " às " + h.fecha) : "Fechado";
+          li.append(dia, hrs); ul.appendChild(li);
+        });
+        const aberto = calcAberto(horario);
+        const status = $("#status-func");
+        if (aberto === null) { status.style.display = "none"; }
+        else if (aberto) { status.textContent = "Aberto agora"; status.classList.add("aberto"); }
+        else { status.textContent = "Fechado agora"; status.classList.add("fechado"); }
+      }
+
+      function renderLocalizacao(c) {
+        const temEnd = temTexto(c.endereco) || temTexto(c.mapa);
+        if (!temEnd) { ocultar("localizacao"); ocultarNav("localizacao"); return; }
+        const end = c.endereco || c.mapa || "";
+        const mapa = c.mapa || c.endereco || "";
+        $("#endereco-texto").textContent = end;
+        document.querySelectorAll("#local-grid [data-reveal-card]").forEach(el => el.classList.add("revelar"));
+        const link = linkMaps(mapa);
+        if (link) {
+          $("#btn-como-chegar").href = link;
+          $("#mapa-frame").src = "https://www.google.com/maps?q=" + encodeURIComponent(mapa) + "&output=embed";
+        } else { $("#btn-como-chegar").style.display = "none"; $(".mapa-wrap").style.display = "none"; }
+      }
+
+      function renderContato(c) {
+        const itens = [];
+        const w = linkWhats(c.whatsapp);
+        if (w) itens.push({ titulo: "WhatsApp", valor: c.telefone || "Conversar no WhatsApp", href: w });
+        if (temTexto(c.telefone) && !w) itens.push({ titulo: "Telefone", valor: c.telefone, href: "tel:" + esc(c.telefone).replace(/\s/g, "") });
+        else if (temTexto(c.telefone) && w) itens.push({ titulo: "Telefone", valor: c.telefone, href: "tel:" + esc(c.telefone).replace(/\s/g, "") });
+        const ig = linkInsta(c.instagram);
+        if (ig) itens.push({ titulo: "Instagram", valor: "@" + esc(c.instagram).replace(/^@/, ""), href: ig });
+        if (temTexto(c.endereco)) itens.push({ titulo: "Endereço", valor: c.endereco, href: linkMaps(c.mapa || c.endereco) });
+
+        // Remover duplicidades simples
+        const unicos = [];
+        const visto = new Set();
+        itens.forEach(i => { const k = i.titulo + "|" + i.valor; if (!visto.has(k)) { visto.add(k); unicos.push(i); } });
+
+        if (!unicos.length) { ocultar("contato"); ocultarNav("contato"); return; }
+        const grid = $("#contato-grid");
+        unicos.forEach(i => {
+          const card = document.createElement("div");
+          card.className = "card contato-item revelar";
+          const h3 = document.createElement("h3"); h3.textContent = i.titulo;
+          const a = document.createElement(i.href ? "a" : "p");
+          a.textContent = i.valor;
+          if (i.href) { a.href = i.href; if (i.href.startsWith("http")) { a.target = "_blank"; a.rel = "noopener"; } }
+          card.append(h3, a); grid.appendChild(card);
+        });
+      }
+
+      function iniciarAnimacoes() {
+        const reduzir = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const anim = (document.body && document.body.dataset.animacao) || "suave";
+        const repetir = (document.body && document.body.dataset.animacaoRepetir) !== "false";
+        const ativaAnim = !reduzir && anim !== "nenhuma";
+
+        if (ativaAnim) document.documentElement.classList.add("js-anim");
+
+        let scrollDir = "down";
+        let ultimoY = window.scrollY || 0;
+
+        // Atraso escalonado (~stagger) para cards da mesma grade
+        const stagger = anim === "dinamica" ? 100 : 80;
+        const grades = ["#difs", "#produtos-grid", "#galeria-grid", "#depo-grid", "#contato-grid", "#local-grid"];
+        grades.forEach(sel => {
+          const cont = document.querySelector(sel);
+          if (!cont) return;
+          const itens = Array.from(cont.children).filter(el => el.classList && el.classList.contains("revelar"));
+          itens.forEach((el, i) => { el.style.setProperty("--atraso", (i * stagger) + "ms"); });
+        });
+
+        const revelarEls = Array.from(document.querySelectorAll(".revelar"));
+        const fixos = revelarEls.filter(el => el.hasAttribute("data-revelar-fixo"));
+        const observaveis = revelarEls.filter(el => !el.hasAttribute("data-revelar-fixo"));
+
+        fixos.forEach(el => el.classList.add("visivel"));
+
+        if (!ativaAnim || !("IntersectionObserver" in window)) {
+          observaveis.forEach(el => el.classList.add("visivel"));
+        } else {
+          // Evita flash inicial: elementos já visíveis começam revelados
+          const margemPx = window.innerHeight * 0.08;
+          observaveis.forEach(el => {
+            const r = el.getBoundingClientRect();
+            if (r.top < window.innerHeight - margemPx && r.bottom > 0) {
+              el.classList.add("visivel");
+            }
+          });
+
+          if (repetir) {
+            const obs = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                const el = entry.target;
+                if (entry.isIntersecting) {
+                  el.classList.remove("sem-transicao");
+                  el.classList.toggle("dir-cima", scrollDir === "up");
+                  el.classList.add("visivel");
+                } else {
+                  // reset sem animação visível; só esconde quando bem fora (rootMargin negativo embaixo)
+                  el.classList.add("sem-transicao");
+                  el.classList.remove("visivel", "dir-cima");
+                  void el.offsetWidth;
+                  el.classList.remove("sem-transicao");
+                }
+              });
+            }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+            observaveis.forEach(el => obs.observe(el));
+          } else {
+            const obs = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("visivel");
+                  obs.unobserve(entry.target);
+                }
+              });
+            }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+            observaveis.forEach(el => obs.observe(el));
+          }
+        }
+
+        const topo = document.getElementById("topo");
+        const barra = document.getElementById("progresso-leitura");
+        const whats = document.getElementById("whats-float");
+        const heroBg = document.getElementById("hero-bg");
+        const linksMenu = Array.from(document.querySelectorAll('#menu a[data-nav]'));
+        const secoes = linksMenu.map(a => document.getElementById(a.dataset.nav)).filter(Boolean);
+
+        function atualizarScroll() {
+          const y = window.scrollY || document.documentElement.scrollTop || 0;
+          scrollDir = y >= ultimoY ? "down" : "up";
+          ultimoY = y;
+          const doc = document.documentElement;
+          const max = (doc.scrollHeight - window.innerHeight) || 1;
+          const prog = Math.min(1, Math.max(0, y / max));
+          if (barra) barra.style.transform = "scaleX(" + prog + ")";
+          if (topo) topo.classList.toggle("scrolled", y > 8);
+          if (whats && whats.style.display !== "none") whats.classList.toggle("visivel", y > 220);
+
+          // Parallax sutil no hero (desligado no celular e sem animação)
+          if (heroBg && ativaAnim && window.innerWidth >= 768) {
+            const offset = Math.min(40, y * 0.15);
+            heroBg.style.transform = "translateY(" + offset + "px)";
+          } else if (heroBg) {
+            heroBg.style.transform = "";
+          }
+        }
+
+        let ticking = false;
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => { atualizarScroll(); ticking = false; });
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", atualizarScroll);
+        atualizarScroll();
+
+        // Scrollspy: destaca link da seção atual
+        if (linksMenu.length && secoes.length && "IntersectionObserver" in window) {
+          const spy = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                linksMenu.forEach(a => a.classList.toggle("ativo", a.dataset.nav === entry.target.id));
+              }
+            });
+          }, { rootMargin: "-30% 0px -55% 0px", threshold: 0.01 });
+          secoes.forEach(sec => spy.observe(sec));
+        }
+
+        // Rolagem suave ao clicar no menu
+        linksMenu.forEach(a => {
+          a.addEventListener("click", (e) => {
+            const id = a.getAttribute("href");
+            if (!id || id.charAt(0) !== "#") return;
+            const alvo = document.querySelector(id);
+            if (!alvo) return;
+            e.preventDefault();
+            alvo.scrollIntoView({ behavior: reduzir ? "auto" : "smooth", block: "start" });
+          });
+        });
+      }
+
+      try {
+        if (typeof TEMA !== "undefined") aplicarTema(TEMA);
+        if (typeof CLIENTE !== "undefined") {
+          aplicarSEO(CLIENTE);
+          renderHero(CLIENTE);
+          renderSobre(CLIENTE);
+          renderProdutos(CLIENTE);
+          renderGaleria(CLIENTE);
+          renderDepoimentos(CLIENTE);
+          renderHorario(CLIENTE);
+          renderLocalizacao(CLIENTE);
+          renderContato(CLIENTE);
+        }
+        iniciarAnimacoes();
+      } catch (e) {
+        console.error("Erro ao inicializar o site:", e);
+        document.documentElement.classList.remove("js-anim");
+        document.querySelectorAll(".revelar").forEach(el => el.classList.add("visivel"));
+        var wf = document.getElementById("whats-float");
+        if (wf) wf.classList.add("visivel");
+      }
+    })();
+  </script>
+</body>
+</html>
